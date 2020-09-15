@@ -6,7 +6,7 @@ public class Curso {
 	private String nombre;
 	private String identificador;
 	private int horas;
-	private Profesor profesor;
+	private Usuario profesor;
 	// TODO
     // private ArrayList<Alumno> alumno
 
@@ -18,7 +18,7 @@ public class Curso {
 		this.nombre = "";
 		this.identificador = "";
 		this.horas = 0;
-		this.profesor = new Profesor();
+		this.profesor = new Usuario();
 	}
 
 
@@ -71,13 +71,13 @@ public class Curso {
 
 
 
-	public Profesor getProfesor() {
+	public Usuario getProfesor() {
 		return profesor;
 	}
 
 
 
-	public void setProfesor(Profesor profesor) {
+	public void setProfesor(Usuario profesor) {
 		this.profesor = profesor;
 	}
 

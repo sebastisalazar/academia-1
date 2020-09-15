@@ -8,22 +8,22 @@ import java.util.ArrayList;
 import academia.modelo.ConnectionManager;
 import academia.modelo.dao.CursoDAO;
 import academia.modelo.pojo.Curso;
-import academia.modelo.pojo.Profesor;
+import academia.modelo.pojo.Usuario;
 
 public class CursoDAOImpl implements CursoDAO {
 	
 	
 	private final static String SQL_LISTAR = "SELECT \n" + 
-												"	c.id as 'curso_id',\n" + 
-												"	c.identificador,\n" + 
-												"	c.nombre as 'curso_nombre',\n" + 
-												"	c.horas,\n" + 
-												"	f.id as 'profesor_id',\n" + 
-												"	f.nombre as 'profesor_nombre',\n" + 
-												"	f.apellidos as 'profesor_apellidos'\n" + 
-												"\n" + 
-												"FROM cursos c, profesores f\n" + 
-												"WHERE\n" + 
+												"	c.id as 'curso_id', " + 
+												"	c.identificador, " + 
+												"	c.nombre as 'curso_nombre', " + 
+												"	c.horas, " + 
+												"	f.id as 'profesor_id', " + 
+												"	f.nombre as 'profesor_nombre', " + 
+												"	f.apellidos as 'profesor_apellidos', " + 
+												"	rol " +												
+												" FROM cursos c, usuarios f " + 
+												" WHERE " + 
 												"	c.id_profesor = f.id;";
 	
 
@@ -45,11 +45,12 @@ public class CursoDAOImpl implements CursoDAO {
 				c.setIdentificador(rs.getString("identificador"));
 				c.setHoras(rs.getInt("horas"));
 				
-				Profesor p = new Profesor();
+				Usuario p = new Usuario();
 				p.setId(rs.getInt("profesor_id"));
 				p.setNombre(rs.getString("profesor_nombre"));
-				//TODO apellidos
-				
+				p.setApellidos( rs.getString("profesor_apellidos"));
+				p.setRol( rs.getInt("rol"));
+								
 				c.setProfesor(p);
 				
 				cursos.add(c);

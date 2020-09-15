@@ -24,32 +24,6 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/ `academia` /*!40100 DEFAULT CHARACTER S
 USE `academia`;
 
 --
--- Table structure for table `alumnos`
---
-
-DROP TABLE IF EXISTS `alumnos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `alumnos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
-  `apellidos` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `alumnos_UN` (`nombre`,`apellidos`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `alumnos`
---
-
-LOCK TABLES `alumnos` WRITE;
-/*!40000 ALTER TABLE `alumnos` DISABLE KEYS */;
-INSERT INTO `alumnos` VALUES (3,'Asier','Mintegui'),(2,'Beatriz','Martinez'),(1,'Elier','Otero'),(4,'Lander','Bilbao');
-/*!40000 ALTER TABLE `alumnos` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `alumnos_curso`
 --
 
@@ -61,9 +35,9 @@ CREATE TABLE `alumnos_curso` (
   `id_alumno` int(11) NOT NULL,
   `id_curso` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `necesitamos_alumno_FK` (`id_alumno`),
   KEY `necesitamos_curso_FK` (`id_curso`),
-  CONSTRAINT `necesitamos_alumno_FK` FOREIGN KEY (`id_alumno`) REFERENCES `alumnos` (`id`),
+  KEY `necesitamos_alumnos_FK` (`id_alumno`),
+  CONSTRAINT `necesitamos_alumnos_FK` FOREIGN KEY (`id_alumno`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `necesitamos_curso_FK` FOREIGN KEY (`id_curso`) REFERENCES `cursos` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -74,7 +48,7 @@ CREATE TABLE `alumnos_curso` (
 
 LOCK TABLES `alumnos_curso` WRITE;
 /*!40000 ALTER TABLE `alumnos_curso` DISABLE KEYS */;
-INSERT INTO `alumnos_curso` VALUES (1,1,1),(2,1,2),(3,2,1),(4,2,3),(5,3,2),(6,3,3),(7,4,1),(8,4,3);
+INSERT INTO `alumnos_curso` VALUES (1,4,1),(2,4,2),(3,5,1),(4,5,3),(5,6,2),(6,6,3),(7,7,1),(8,7,3);
 /*!40000 ALTER TABLE `alumnos_curso` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,8 +68,8 @@ CREATE TABLE `cursos` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `cursos_nombre_UN` (`nombre`),
   UNIQUE KEY `cursos_identificador_UN` (`identificador`),
-  KEY `cursos_necesita_profesor_FK` (`id_profesor`),
-  CONSTRAINT `cursos_necesita_profesor_FK` FOREIGN KEY (`id_profesor`) REFERENCES `profesores` (`id`)
+  KEY `cursos_neceista_profesor_FK` (`id_profesor`),
+  CONSTRAINT `cursos_neceista_profesor_FK` FOREIGN KEY (`id_profesor`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -110,30 +84,36 @@ INSERT INTO `cursos` VALUES (1,'Microsoft Office 2016','I001',50,1),(2,'Experto 
 UNLOCK TABLES;
 
 --
--- Table structure for table `profesores`
+-- Table structure for table `usuarios`
 --
 
-DROP TABLE IF EXISTS `profesores`;
+DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `profesores` (
+CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
   `apellidos` varchar(100) NOT NULL,
+  `rol` int(11) NOT NULL DEFAULT '1' COMMENT '1: Alumno\n2: Profesor',
+  `password` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `profesores_UN` (`nombre`,`apellidos`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `usuarios_UN` (`nombre`,`apellidos`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `profesores`
+-- Dumping data for table `usuarios`
 --
 
-LOCK TABLES `profesores` WRITE;
-/*!40000 ALTER TABLE `profesores` DISABLE KEYS */;
-INSERT INTO `profesores` VALUES (1,'Alain','Moles'),(2,'Ander','Uraga'),(3,'Pepito','Piscinas');
-/*!40000 ALTER TABLE `profesores` ENABLE KEYS */;
+LOCK TABLES `usuarios` WRITE;
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES (1,'Alain','Moles',2,'132456'),(2,'Ander','Uraga',2,'123456'),(3,'Dr','Bacterio',2,'123456'),(4,'Elier','Otero',1,'123456'),(5,'Beatriz','Martinez',1,'132456'),(6,'Asier','Mintegi',1,'123456'),(7,'Lander','Bilbao',1,'123456');
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'academia'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -144,4 +124,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-14 11:47:33
+-- Dump completed on 2020-09-15  8:45:23
