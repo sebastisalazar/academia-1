@@ -1,3 +1,4 @@
+<jsp:include page="includes/head.jsp"/>
 
 <h2>TAREAS</h2>
 <ol>
@@ -24,3 +25,6 @@
 <h1> Listado Cursos </h1>
 
 ${cursos}
+
+
+<jsp:include page="includes/footer.jsp"/>

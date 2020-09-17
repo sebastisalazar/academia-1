@@ -1,6 +1,7 @@
 package academia.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import academia.modelo.dao.impl.UsuarioDAOImpl;
+import academia.modelo.pojo.Curso;
 import academia.modelo.pojo.Usuario;
 
 /**
@@ -45,6 +47,10 @@ public class LoginController extends HttpServlet {
 			
 		}else if ( usuario.getRol() == Usuario.ROL_PROFESOR ) {
 			
+			int idProfersor = usuario.getId();			
+			ArrayList<Curso> cursos = new ArrayList<Curso>();
+			// Crea el DAO de Cursos y obtento todos los cursos de ese profesor por su id
+			request.setAttribute("cursos", cursos);
 			request.getSession().setAttribute("usuario_sesion", usuario);
 			request.getRequestDispatcher("privado/profesor.jsp").forward(request, response);
 			
