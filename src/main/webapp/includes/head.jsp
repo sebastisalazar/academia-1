@@ -19,6 +19,7 @@
         <nav id="menu_principal">
             <ul>
                 <li><a href="cursos.jsp"><div class="icono home"></div>Inicio</a></li>
+                <li><a href="login.jsp">Iniciar Sesión</a></li>
             </ul>
         </nav>
         
