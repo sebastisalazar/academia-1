@@ -1,4 +1,5 @@
-<jsp:include page="includes/head.jsp"/>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<jsp:include page="includes/cabecera.jsp"/>
 
 <h2>TAREAS</h2>
 <ol>
@@ -24,7 +25,35 @@
 
 <h1> Listado Cursos </h1>
 
-${cursos}
+<table class="table table-striped table-hover tabla ">
+	<thead class="thead-dark text-center">
+		<tr>
+			<th scope="col">ID</th>
+			<th scope="col">CURSO</th>
+			<th scope="col">IDENTIFICADOR</th>
+			<th scope="col">HORAS</th>
+			<th scope="col">PROFESOR</th>
+			<th scope="col">ROL</th>
+			
+		</tr>
+	</thead>
+	<tbody>
 
+<c:forEach items="${cursos}" var="c">
+			<tr class="text-center">
+				<td>${c.id}</td>
+				<td>${c.nombre}</td>
+				<td>${c.identificador}</td>
+				<td>${c.horas}</td>
+				<td>${c.profesor.nombre} ${c.profesor.apellidos} </td>
+				<td>${c.profesor.rol}</td>
+				
+				
+			</tr>
+</c:forEach>
 
-<jsp:include page="includes/footer.jsp"/>
+	</tbody>
+
+</table>
+
+<jsp:include page="includes/pie.jsp"/>
