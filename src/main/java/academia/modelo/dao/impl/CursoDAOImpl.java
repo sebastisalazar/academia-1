@@ -39,14 +39,15 @@ public class CursoDAOImpl implements CursoDAO {
 			" WHERE " + 
 			"	c.id_profesor = f.id AND c.id_profesor=? ;";
 	
-	private final static String SQL_LISTAR_POR_ALUMNO= "SELECT c.nombre,c.identificador,c.horas, u.nombre " + 
+	private final static String SQL_LISTAR_POR_ALUMNO= "SELECT c.id as curso_id, c.nombre as curso,c.identificador as identificador,c.horas as horas, u.nombre as nombre, u.apellidos " + 
 			"FROM cursos c,alumnos_curso a,usuarios u " + 
 			"WHERE c.id = a.id_curso " + 
-			"AND a.id_alumno= u.id " + 
-			"AND a.id_alumno = ?";
+			"AND a.id_alumno= u.id  " + 
+			"AND a.id_alumno = ? ";
 
 	private final static String SQL_INSERT_CURSO = "INSERT INTO academia.cursos (nombre, identificador, horas, id_profesor) VALUES(?, ?, ?, ?);";
 	
+	private final static String SQL_ALTAALUMNOCURSO= "INSERT INTO academia.alumnos_curso (id_alumno, id_curso) VALUES(?, ?);";
 	
 	private String SQL_DELETE_CURSO="DELETE FROM academia.cursos WHERE id=?;";
 
@@ -140,6 +141,7 @@ public ArrayList<Curso> listarPorAlumno(int id) {
 		 	
 		){
 		
+		
 		pst.setInt(1, id);
 		ResultSet rs = pst.executeQuery();
 		
@@ -147,17 +149,14 @@ public ArrayList<Curso> listarPorAlumno(int id) {
 			
 			
 			Curso c = new Curso();
-			c.setId( rs.getInt("curso_id"));
-			c.setNombre( rs.getString("curso_nombre"));
+			c.setId(rs.getInt("curso_id"));
+			c.setNombre( rs.getString("curso"));
 			c.setIdentificador(rs.getString("identificador"));
 			c.setHoras(rs.getInt("horas"));
 			
+			
+			//TODO
 			Usuario p = new Usuario();
-			p.setId(rs.getInt("profesor_id"));
-			p.setNombre(rs.getString("profesor_nombre"));
-			p.setApellidos( rs.getString("profesor_apellidos"));
-			p.setPassword(rs.getString("profesor_password"));
-			p.setRol( rs.getInt("rol"));
 							
 			c.setProfesor(p);
 			
@@ -201,6 +200,31 @@ public Curso CrearCurso(Curso c) throws Exception {
 	}
 
 	return c;
+	
+}
+
+public void AltaAlumnoCurso(int id_alumno,int id_curso) throws Exception {
+	
+	try (Connection con = ConnectionManager.getConnection();
+
+			PreparedStatement pst = con.prepareStatement(SQL_ALTAALUMNOCURSO);
+
+	) {
+		// se modifica la insert diciendo que el interrogante lo sustituya con el nombre
+		// del objeto
+		pst.setInt(1, id_alumno);
+		pst.setInt(2, id_curso);
+
+		pst.executeUpdate();
+
+		
+
+	} catch (Exception e) {
+		
+		// este lanzariía el mensaje del catch interno (Erro, ya existe...)
+		throw new Exception(e.getMessage());
+	}
+
 	
 }
 

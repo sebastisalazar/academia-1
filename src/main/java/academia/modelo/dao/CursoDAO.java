@@ -2,9 +2,8 @@ package academia.modelo.dao;
 
 import java.util.ArrayList;
 
-
 import academia.modelo.pojo.Curso;
-import academia.modelo.pojo.Usuario;
+
 
 public interface CursoDAO {
 	
@@ -15,5 +14,7 @@ public interface CursoDAO {
 	Curso CrearCurso(Curso c) throws Exception;
 	
 	void BorrarCurso(Curso c)throws Exception;
+	
+	void AltaAlumnoCurso(int id_curso, int id_alumno) throws Exception;
 
 }

@@ -17,7 +17,7 @@ import academia.modelo.pojo.Usuario;
 /**
  * Servlet implementation class CursoController
  */
-@WebServlet({"/cursos","/crear-curso", "/eliminar-curso"})
+@WebServlet({"/cursos","/crear-curso", "/eliminar-curso","alta-curso"})
 public class CursoController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -29,6 +29,7 @@ public class CursoController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		boolean llamaAeliminar = ("/eliminar-curso").equalsIgnoreCase(request.getServletPath());
+		boolean llamaAalta = ("/alta-curso").equalsIgnoreCase(request.getServletPath());
 		ArrayList<Curso> cursos = new ArrayList<Curso>();
 		//TODO singleton
 		CursoDAO dao = new CursoDAOImpl();
@@ -46,6 +47,20 @@ public class CursoController extends HttpServlet {
 				e.printStackTrace();
 			}
 			 
+			 request.getRequestDispatcher("login").forward(request, response);
+			 
+		}else if (llamaAalta) {
+			int id_curso=Integer.parseInt(request.getParameter("id"));
+			Usuario usuario= (Usuario) request.getSession().getAttribute("usuario_sesion");
+			int id_usuario= usuario.getId();
+			
+			 try {
+				cursoDao.AltaAlumnoCurso(id_curso, id_usuario);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			 request.getRequestDispatcher("login").forward(request, response);
 		}
 		

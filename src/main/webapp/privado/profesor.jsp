@@ -2,7 +2,7 @@
 
 <jsp:include page="../includes/cabecera.jsp"/>
 
-	<h1>Bien Venido Profesor</h1>
+	<h1>Bienvenido Profesor</h1>
 	<!-- ${usuario_sesion} -->
 	<table class="table table-striped table-hover tabla ">
 	<thead class="thead-dark text-center">
