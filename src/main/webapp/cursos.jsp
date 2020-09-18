@@ -3,7 +3,7 @@
 
 <h2>TAREAS</h2>
 <ol>
-	<li>Maquetar pagina web, css e includes para reutilizar</li>
+	<li>Maquetar pagina web, css e includes para reutilizar  <strong>HECHO</strong></li>
 	<li>miercoles: Si se logea un PROFESOR que muestre sus curso, desde la misma JSP podria crear un nuevo curso y eliminarlo</li>
 	<li>jueves: Si se logea un ALUMNO que muestre sus curso a los que esta inscrito, desde la misma JSP apuntarse a un nuevo curso</li>	
 </ol>
@@ -24,6 +24,8 @@
 
 
 <h1> Listado Cursos </h1>
+
+${cursos}
 
 <table class="table table-striped table-hover tabla ">
 	<thead class="thead-dark text-center">

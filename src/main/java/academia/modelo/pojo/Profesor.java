@@ -13,6 +13,12 @@ public class Profesor {
 		this.apellidos = "";
 	}
 
+	public Profesor(int id) {
+		this.id = id;
+		this.nombre = "";
+		this.apellidos = "";
+	}
+
 	public int getId() {
 		return id;
 	}

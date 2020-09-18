@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!-- Todas las rutas relativas comienzan por el href indicado -->
-<!--  ${pageContext.request.contextPath} == http://localhost:8080/agencia-viajes master -->
 <base href="${pageContext.request.contextPath}/" />
 
 <!doctype html>
@@ -17,7 +15,7 @@
 	content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
 <meta name="generator" content="Jekyll v4.0.1">
 
-<!-- PAnel admin -->
+
 
  <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -108,9 +106,9 @@
 						d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94" /></svg>
 			</a> <a
 				class="py-2 d-none d-md-inline-block "
-				href="inicio">Inicio</a> <a
+				href="cursos">Inicio</a> <a
 				class="py-2 d-none d-md-inline-block "
-				href="listado-ciudades">Iniciar Sesion</a> 
+				href="login.jsp">Iniciar Sesion</a> 
 				
 			
 			

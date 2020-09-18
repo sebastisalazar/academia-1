@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import academia.modelo.dao.impl.CursoDAOImpl;
 import academia.modelo.dao.impl.UsuarioDAOImpl;
 import academia.modelo.pojo.Curso;
 import academia.modelo.pojo.Usuario;
@@ -36,30 +37,59 @@ public class LoginController extends HttpServlet {
 		
 		String nombre = request.getParameter("nombre");
 		String password = request.getParameter("password");
+		ArrayList<Curso> cursos = new ArrayList<Curso>();
+		
 		UsuarioDAOImpl dao = new UsuarioDAOImpl();
+		CursoDAOImpl daocurso = new CursoDAOImpl();
 		
-		Usuario usuario = dao.buscar(nombre, password);
+		Usuario usuario=(Usuario) request.getSession().getAttribute("usuario_sesion");
 		
-
-		if ( usuario == null ) {
-			request.setAttribute("mensaje", "Credenciales incorrectas, prueba de nuevo por favor");
-			request.getRequestDispatcher("login.jsp").forward(request, response);
+		if (usuario==null) {
 			
-		}else if ( usuario.getRol() == Usuario.ROL_PROFESOR ) {
-			
-			int idProfersor = usuario.getId();			
-			ArrayList<Curso> cursos = new ArrayList<Curso>();
-			// Crea el DAO de Cursos y obtento todos los cursos de ese profesor por su id
-			request.setAttribute("cursos", cursos);
-			request.getSession().setAttribute("usuario_sesion", usuario);
-			request.getRequestDispatcher("privado/profesor.jsp").forward(request, response);
-			
-			
+			usuario=dao.buscar(nombre, password);
+		
+		
+			if ( usuario == null ) {
+				request.setAttribute("mensaje", "Credenciales incorrectas, prueba de nuevo por favor");
+				request.getRequestDispatcher("login.jsp").forward(request, response);
+				
+			}else if ( usuario.getRol() == Usuario.ROL_PROFESOR ) {
+				
+				int idProfersor = usuario.getId();			
+				cursos = daocurso.listarPorProfesor(idProfersor);
+				// Crea el DAO de Cursos y obtento todos los cursos de ese profesor por su id
+				
+				
+				request.setAttribute("cursos", cursos);
+				request.getSession().setAttribute("usuario_sesion", usuario);
+				request.getRequestDispatcher("privado/profesor.jsp").forward(request, response);
+				
+				
+			}else {
+				
+				request.getSession().setAttribute("usuario_sesion", usuario);
+				request.getRequestDispatcher("privado/alumno.jsp").forward(request, response);
+			}
 		}else {
 			
-			request.getSession().setAttribute("usuario_sesion", usuario);
-			request.getRequestDispatcher("privado/alumno.jsp").forward(request, response);
+			if (usuario.getRol()== Usuario.ROL_PROFESOR) {
+				cursos = daocurso.listarPorProfesor(usuario.getId());
+				// Crea el DAO de Cursos y obtento todos los cursos de ese profesor por su id
+				
+				request.setAttribute("cursos", cursos);
+				request.getRequestDispatcher("privado/profesor.jsp").forward(request, response);
+			}else {
+				request.getRequestDispatcher("privado/alumno.jsp").forward(request, response);
+			}
+			
 		}
+		
+		
+		
+		
+		
+
+		
 			
 			
 		
