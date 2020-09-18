@@ -38,6 +38,8 @@ public class LoginController extends HttpServlet {
 		String nombre = request.getParameter("nombre");
 		String password = request.getParameter("password");
 		ArrayList<Curso> cursos = new ArrayList<Curso>();
+
+		ArrayList<Curso> cursosTodos = new ArrayList<Curso>();
 		
 		UsuarioDAOImpl dao = new UsuarioDAOImpl();
 		CursoDAOImpl daocurso = new CursoDAOImpl();
@@ -67,7 +69,6 @@ public class LoginController extends HttpServlet {
 				int idAlumno= usuario.getId();
 				
 				cursos=daocurso.listarPorAlumno(idAlumno);
-				ArrayList<Curso> cursosTodos = new ArrayList<Curso>();
 				
 				cursosTodos=daocurso.listar();
 				
@@ -90,7 +91,10 @@ public class LoginController extends HttpServlet {
 			}else {
 				
 				cursos=daocurso.listarPorAlumno(usuario.getId());
+				cursosTodos=daocurso.listar();
 				request.setAttribute("cursos", cursos);
+
+				request.setAttribute("cursosTodos", cursosTodos);
 				request.getSession().setAttribute("usuario_sesion", usuario);
 				request.getRequestDispatcher("privado/alumno.jsp").forward(request, response);
 			}
