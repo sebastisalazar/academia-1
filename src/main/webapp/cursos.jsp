@@ -12,18 +12,18 @@
 
 <h2>TAREAS</h2>
 <ol>
-	<li>Maquetar pagina web, css e includes para reutilizar  <strong>HECHO</strong></li>
-	<li>miercoles: Si se logea un PROFESOR que muestre sus curso, desde la misma JSP podria crear un nuevo curso y eliminarlo <strong>HECHO</strong></li>
-	<li>jueves: Si se logea un ALUMNO que muestre sus curso a los que esta inscrito, desde la misma JSP apuntarse a un nuevo curso <strong>HECHO</strong></li>	
+	<li>Maquetar pagina web, css e includes para reutilizar  <i class="fas fa-check text-success"></i></li>
+	<li>miercoles: Si se logea un PROFESOR que muestre sus curso, desde la misma JSP podria crear un nuevo curso y eliminarlo <i class="fas fa-check text-success"></i></li>
+	<li>jueves: Si se logea un ALUMNO que muestre sus curso a los que esta inscrito, desde la misma JSP apuntarse a un nuevo curso <i class="fas fa-check text-success"></i></li>	
 </ol>
 
 <h2>EXTRAS</h2>
 <ol>
 	<li>Trazas de LOG <strong>TODO</strong></li>
-	<li>Singleton <strong>HECHO</strong></li>
-	<li>Gestion de errores TRY y CACTH sobre todo en los controladore <strong>HECHO</strong></li>
-	<li>Validacion de datos de los formulario con javax.validation <strong>HECHO</strong></li>
-	<li>Gestion de Seguridad, que los profesores y alumnos solo puedan modificar sus datos, No poder saltarse el Login <strong>HECHO</strong></li>
+	<li>Singleton <i class="fas fa-check text-success"></i></li>
+	<li>Gestion de errores TRY y CACTH sobre todo en los controladore <i class="fas fa-check text-success"></i></li>
+	<li>Validacion de datos de los formulario con javax.validation <i class="fas fa-check text-success"></i></li>
+	<li>Gestion de Seguridad, que los profesores y alumnos solo puedan modificar sus datos, No poder saltarse el Login <i class="fas fa-check text-success"></i></li>
 	<li>Un ALUMNO puede escribir una reseña de un curso/profesor, calificando del 1 al 5 y escribiendo un comentario <strong>TODO</strong></li>	
 </ol>
 

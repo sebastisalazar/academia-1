@@ -20,7 +20,7 @@ public class Curso {
 		
 	
 	@Min(value = 50, message = ": El minimo de horas para un curso es de 50 ")
-    @Max(value = 650, message = ": El minimo de horas para un curso es de 650")
+    @Max(value = 650, message = ": El maximo de horas para un curso es de 650")
 	private int horas;
 		
 	private Usuario profesor;
