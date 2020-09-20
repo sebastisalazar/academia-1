@@ -48,63 +48,86 @@ public class LoginController extends HttpServlet {
 		Usuario usuario=(Usuario) request.getSession().getAttribute("usuario_sesion");
 		
 		
+		ArrayList<String> requeridos= new ArrayList<String>();
+		
 		//si no existe sesión y se entra al controlador por el formulario login
 		if (usuario==null) {
 			
+			//se verifica campos vacios
+			if (("").equalsIgnoreCase(nombre)) {
+				requeridos.add("<p> <span class=\"font-weight-bold mx-1\">Nombre: </span>"+"Escribe el usuario</p>");
+			}
 			
-			//se verifica su cuenta en BBDD
-			usuario=dao.buscar(nombre, password);
+			if (("").equalsIgnoreCase(password)) {
+				requeridos.add("<p> <span class=\"font-weight-bold mx-1\">Password: </span>"+"Escribe la contraseña</p>");
+			}
 			
 			
-			//si no se encuentra en la BBDD se muestra mensaje
-			if ( usuario == null ) {
+			//si no hay campos vacios se procede a comprobar si existe
+			if (requeridos.size()==0) {
 				
-				request.setAttribute("mensaje", "Credenciales incorrectas, prueba de nuevo por favor");
-				request.getRequestDispatcher("login.jsp").forward(request, response);
-			
-			//si existe cuenta y la cuenta es de tipo PROFESOR se obtiene los datos relacionados a la cuenta
-			}else if ( usuario.getRol() == Usuario.ROL_PROFESOR ) {
 				
-				int idProfersor = usuario.getId();			
-				try {
-					cursos = daocurso.listarPorProfesor(idProfersor);
-				} catch (Exception e) {
-					request.setAttribute("mensaje", e.getMessage());
+				//se verifica su cuenta en BBDD
+				usuario=dao.buscar(nombre, password);
+				
+				if ( usuario == null ) {
 					
+					//si no se encuentra en la BBDD se muestra mensaje
+					request.setAttribute("mensaje", "Credenciales incorrectas, prueba de nuevo por favor");
+					request.getRequestDispatcher("login.jsp").forward(request, response);
+				
+				//si existe cuenta y la cuenta es de tipo PROFESOR se obtiene los datos relacionados a la cuenta
+				}else if ( usuario.getRol() == Usuario.ROL_PROFESOR ) {
+					
+					int idProfersor = usuario.getId();	
+					
+					try {
+						cursos = daocurso.listarPorProfesor(idProfersor);
+					} catch (Exception e) {
+						request.setAttribute("mensaje", e.getMessage());
+						
+					}
+					
+					request.setAttribute("cursos", cursos);
+					request.getSession().setAttribute("usuario_sesion", usuario);
+					
+					
+					//Se redirige a la vista para profesores
+					request.getRequestDispatcher("privado/profesor.jsp").forward(request, response);
+					
+				//si es alumno se obtiene los datos relacionados a la cuenta
+				}else {
+					
+					int idAlumno= usuario.getId();
+					
+					try {
+						cursos=daocurso.listarPorAlumno(idAlumno);
+					} catch (Exception e) {
+						request.setAttribute("mensaje", e.getMessage());
+					}
+					
+					try {
+						cursosTodos=daocurso.listar();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
+					request.setAttribute("cursos", cursos);
+					request.setAttribute("cursosTodos", cursosTodos);
+					request.getSession().setAttribute("usuario_sesion", usuario);
+					
+					//Se redirige a la vista para alumnos
+					request.getRequestDispatcher("privado/alumno.jsp").forward(request, response);
 				}
 				
-				request.setAttribute("cursos", cursos);
-				request.getSession().setAttribute("usuario_sesion", usuario);
-				
-				
-				//Se redirige a la vista para profesores
-				request.getRequestDispatcher("privado/profesor.jsp").forward(request, response);
-				
-			//si es alumno se obtiene los datos relacionados a la cuenta
+			//si hay errores en el formulario se redirige
 			}else {
 				
-				int idAlumno= usuario.getId();
+				request.setAttribute("camposerroneos", requeridos);
+				request.getRequestDispatcher("login.jsp").forward(request, response);
 				
-				try {
-					cursos=daocurso.listarPorAlumno(idAlumno);
-				} catch (Exception e) {
-					request.setAttribute("mensaje", e.getMessage());
-				}
-				
-				try {
-					cursosTodos=daocurso.listar();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
-				request.setAttribute("cursos", cursos);
-				request.setAttribute("cursosTodos", cursosTodos);
-				request.getSession().setAttribute("usuario_sesion", usuario);
-				
-				//Se redirige a la vista para alumnos
-				request.getRequestDispatcher("privado/alumno.jsp").forward(request, response);
 			}
 			
 			

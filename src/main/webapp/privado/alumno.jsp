@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
+
 <jsp:include page="../includes/cabecera.jsp">
 
 	<jsp:param name="pagina" value="Vista Alumno" />

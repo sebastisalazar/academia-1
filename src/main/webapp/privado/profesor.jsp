@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
+
 <jsp:include page="../includes/cabecera.jsp">
 
 	<jsp:param name="pagina" value="Vista Profesor" />
@@ -125,21 +127,30 @@
 				
 				<% request.removeAttribute("mensajecurso"); %>
 	</c:if>
+	
+	<c:if test="${not empty camposerroneos}">
+	
+		<div class="alert alert-danger" role="alert">
+			<c:forEach items="${camposerroneos}" var="e">
+				${e}
+			</c:forEach>
+		</div>
+	</c:if>
 
 
 	<form action="crear-curso" method="POST">
 	  <div class="form-group">
-	    <label for="nombre">Nombre del curso</label>
-	    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Introduce el nombre del curso">
+	    <label for="nombre" >Nombre del curso</label>
+	    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Introduce el nombre del curso" value="">
 	    
 	  </div>
 	  <div class="form-group">
-	    <label for="horas">Horas</label>
-	    <input type="number" class="form-control" id="horas" name="horas" placeholder="Introduce las horas">
+	    <label for="horas" >Horas</label>
+	    <input type="number" class="form-control" id="horas" name="horas" placeholder="Introduce las horas" value="0">
 	  </div>
 	  
 	  <div class="form-group">
-	    <label for="horas">Identificador</label>
+	    <label for="horas" value="">Identificador</label>
 	    <input type="text" class="form-control" id="identificador" name="identificador" placeholder="Introduce el identificador">
 	  </div>
 	

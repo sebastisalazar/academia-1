@@ -1,11 +1,28 @@
 package academia.modelo.pojo;
 
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotBlank;
+
 public class Curso {
 	
 	private int id;
+	//VALIDACIONES
+	@NotBlank ( message = ": Escribe el nombre del curso")
+	@Size( min = 3, max = 100, message = ": La longtitud de ser entre 3 y 100 caracteres")
 	private String nombre;
+	
+	@NotBlank ( message = ": Escribe el identificador")
+	@Size( min = 3, max = 100, message = ": La longtitud de ser entre 3 y 100 caracteres")
 	private String identificador;
+		
+	
+	@Min(value = 50, message = ": El minimo de horas para un curso es de 50 ")
+    @Max(value = 650, message = ": El minimo de horas para un curso es de 650")
 	private int horas;
+		
 	private Usuario profesor;
 	// TODO
     // private ArrayList<Alumno> alumno
