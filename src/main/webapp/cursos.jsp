@@ -1,5 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<jsp:include page="includes/cabecera.jsp"/>
+
+
+
+<jsp:include page="includes/cabecera.jsp">
+
+	<jsp:param name="pagina" value="Inicio" />
+
+	<jsp:param name="title" value="Inicio" />
+
+</jsp:include>
 
 <h2>TAREAS</h2>
 <ol>
@@ -11,8 +20,8 @@
 <h2>EXTRAS</h2>
 <ol>
 	<li>Trazas de LOG <strong>TODO</strong></li>
-	<li>Singleton <strong>TODO</strong></li>
-	<li>Gestion de errores TRY y CACTH sobre todo en los controladore <strong>TODO</strong></li>
+	<li>Singleton <strong>HECHO</strong></li>
+	<li>Gestion de errores TRY y CACTH sobre todo en los controladore <strong>HECHO</strong></li>
 	<li>Validacion de datos de los formulario con javax.validation <strong>TODO</strong></li>
 	<li>Gestion de Seguridad, que los profesores y alumnos solo puedan modificar sus datos, No poder saltarse el Login <strong>TODO</strong></li>
 	<li>Un ALUMNO puede escribir una reseña de un curso/profesor, calificando del 1 al 5 y escribiendo un comentario <strong>TODO</strong></li>	

@@ -1,5 +1,16 @@
-<jsp:include page="includes/cabecera.jsp"/>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<c:if test="${not empty usuario_sesion}">
+	<c:redirect url="/login"/>
+</c:if>
+
+<jsp:include page="includes/cabecera.jsp">
+
+	<jsp:param name="pagina" value="Iniciar sesion" />
+
+	<jsp:param name="title" value="Iniciar sesion" />
+
+</jsp:include>
 	
 	
 	<div class="d-flex flex-row justify-content-center border-0  ">

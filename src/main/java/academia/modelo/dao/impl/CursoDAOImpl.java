@@ -5,6 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+
 import academia.modelo.ConnectionManager;
 import academia.modelo.dao.CursoDAO;
 import academia.modelo.pojo.Curso;
@@ -12,6 +16,27 @@ import academia.modelo.pojo.Usuario;
 
 public class CursoDAOImpl implements CursoDAO {
 	
+	
+	//LOG
+		private final static Logger LOG = Logger.getLogger(UsuarioDAOImpl.class);
+
+	//Patrón singleton
+		private static CursoDAOImpl INSTANCE=null;
+		
+		private CursoDAOImpl() {
+			super();
+		}
+		
+		
+		public static synchronized CursoDAOImpl getInstance() {
+			
+			if (INSTANCE==null) {
+				INSTANCE= new CursoDAOImpl();
+			}
+			
+			return INSTANCE;
+		}
+		//Fin patron singleton
 	
 	private final static String SQL_LISTAR = "SELECT \n" + 
 												"	c.id as 'curso_id', " + 
@@ -52,7 +77,7 @@ public class CursoDAOImpl implements CursoDAO {
 	private String SQL_DELETE_CURSO="DELETE FROM academia.cursos WHERE id=?;";
 
 	@Override
-	public ArrayList<Curso> listar() {
+	public ArrayList<Curso> listar() throws Exception {
 		
 		ArrayList<Curso> cursos = new ArrayList<Curso>();
 		
@@ -61,7 +86,14 @@ public class CursoDAOImpl implements CursoDAO {
 			 ResultSet rs = pst.executeQuery()	
 			){
 			
-			while ( rs.next() ) {				
+			if (!rs.isBeforeFirst()) {
+				
+				throw new Exception ("No se encontraron cursos en la base de datos");
+				
+			}else {
+				
+				while ( rs.next() ) {				
+			
 				
 				Curso c = new Curso();
 				c.setId( rs.getInt("curso_id"));
@@ -79,18 +111,19 @@ public class CursoDAOImpl implements CursoDAO {
 				
 				cursos.add(c);
 				
+				}
 			}
 			
 			
 		}catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 		
 		return cursos;
 	}
 	
 	
-public ArrayList<Curso> listarPorProfesor(int id) {
+public ArrayList<Curso> listarPorProfesor(int id) throws Exception {
 		
 		ArrayList<Curso> cursos = new ArrayList<Curso>();
 		
@@ -102,37 +135,42 @@ public ArrayList<Curso> listarPorProfesor(int id) {
 			pst.setInt(1, id);
 			ResultSet rs = pst.executeQuery();
 			
-			while ( rs.next() ) {				
+			if (!rs.isBeforeFirst()) {
 				
-				
-				Curso c = new Curso();
-				c.setId( rs.getInt("curso_id"));
-				c.setNombre( rs.getString("curso_nombre"));
-				c.setIdentificador(rs.getString("identificador"));
-				c.setHoras(rs.getInt("horas"));
-				
-				Usuario p = new Usuario();
-				p.setId(rs.getInt("profesor_id"));
-				p.setNombre(rs.getString("profesor_nombre"));
-				p.setApellidos( rs.getString("profesor_apellidos"));
-				p.setPassword(rs.getString("profesor_password"));
-				p.setRol( rs.getInt("rol"));
-								
-				c.setProfesor(p);
-				
-				cursos.add(c);
+				throw new Exception ("No se encontraron cursos impartidos por ti");
+			}else {
+				while ( rs.next() ) {				
+					
+					
+					Curso c = new Curso();
+					c.setId( rs.getInt("curso_id"));
+					c.setNombre( rs.getString("curso_nombre"));
+					c.setIdentificador(rs.getString("identificador"));
+					c.setHoras(rs.getInt("horas"));
+					
+					Usuario p = new Usuario();
+					p.setId(rs.getInt("profesor_id"));
+					p.setNombre(rs.getString("profesor_nombre"));
+					p.setApellidos( rs.getString("profesor_apellidos"));
+					p.setPassword(rs.getString("profesor_password"));
+					p.setRol( rs.getInt("rol"));
+									
+					c.setProfesor(p);
+					
+					cursos.add(c);
+					
+				}
 				
 			}
 			
-			
 		}catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 		
 		return cursos;
 	}
 
-public ArrayList<Curso> listarPorAlumno(int id) {
+public ArrayList<Curso> listarPorAlumno(int id) throws Exception {
 	
 	ArrayList<Curso> cursos = new ArrayList<Curso>();
 	
@@ -145,28 +183,34 @@ public ArrayList<Curso> listarPorAlumno(int id) {
 		pst.setInt(1, id);
 		ResultSet rs = pst.executeQuery();
 		
-		while ( rs.next() ) {				
+		if (!rs.isBeforeFirst()) {
 			
+			throw new Exception ("No se encontraron cursos matriculados");
 			
-			Curso c = new Curso();
-			c.setId(rs.getInt("curso_id"));
-			c.setNombre( rs.getString("curso"));
-			c.setIdentificador(rs.getString("identificador"));
-			c.setHoras(rs.getInt("horas"));
-			
-			
-			//TODO
-			Usuario p = new Usuario();
-							
-			c.setProfesor(p);
-			
-			cursos.add(c);
-			
+		}else {
+			while ( rs.next() ) {				
+				
+				
+				Curso c = new Curso();
+				c.setId(rs.getInt("curso_id"));
+				c.setNombre( rs.getString("curso"));
+				c.setIdentificador(rs.getString("identificador"));
+				c.setHoras(rs.getInt("horas"));
+				
+				
+				//TODO
+				Usuario p = new Usuario();
+								
+				c.setProfesor(p);
+				
+				cursos.add(c);
+				
+			}
 		}
 		
 		
 	}catch (Exception e) {
-		e.printStackTrace();
+		throw new Exception(e.getMessage());
 	}
 	
 	return cursos;
@@ -189,14 +233,15 @@ public Curso CrearCurso(Curso c) throws Exception {
 		pst.setInt(3, c.getHoras());
 		pst.setInt(4, c.getProfesor().getId());
 
-		pst.executeUpdate();
 
+		pst.executeUpdate();
+		
 		
 
-	} catch (Exception e) {
+	}catch (Exception DBSQLException) {
 		
 		// este lanzariía el mensaje del catch interno (Erro, ya existe...)
-		throw new Exception(e.getMessage());
+		throw new Exception("Error, curso no insertado.\n El nombre o identificador del curso podrían ya existir.");
 	}
 
 	return c;
@@ -219,11 +264,12 @@ public void AltaAlumnoCurso(int id_alumno,int id_curso) throws Exception {
 
 		
 
-	} catch (Exception e) {
+	} catch (Exception DBSQLException) {
 		
 		// este lanzariía el mensaje del catch interno (Erro, ya existe...)
-		throw new Exception(e.getMessage());
+		throw new Exception("Error.\n Ya estás matriculado en el curso seleccionado");
 	}
+
 
 	
 }
@@ -232,17 +278,27 @@ public void AltaAlumnoCurso(int id_alumno,int id_curso) throws Exception {
 @Override
 public void BorrarCurso(Curso c) throws Exception {
 	
-	
+	int deletedRow=0;
 	try(
 		Connection con = ConnectionManager.getConnection();
 		PreparedStatement pst=con.prepareStatement(SQL_DELETE_CURSO);
 	){
 		pst.setInt(1, c.getId());
-		pst.executeUpdate();
 		
-	}catch (Exception e) {
-
+		try {
+			deletedRow=pst.executeUpdate();
+		} catch (Exception DBSQLException) {
+			throw new Exception("Error, no se puede eliminar este curso ya que existen alumnos matriculados en el.");
+		}
+			if (deletedRow==2) {
+				throw new Exception("Error, no se ha podido borrar el curso con "+c.getId()+"Puede deberse a que el curso ya ha sido eliminado o no existe");
+			}
+		
+	
+	}catch(Exception e) {
+	
 		throw new Exception(e.getMessage());
+	
 	}
 	
 	

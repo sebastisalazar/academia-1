@@ -22,7 +22,6 @@ public class CursoController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
        
-    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -32,8 +31,8 @@ public class CursoController extends HttpServlet {
 		boolean llamaAalta = ("/alta-curso").equalsIgnoreCase(request.getServletPath());
 		ArrayList<Curso> cursos = new ArrayList<Curso>();
 		//TODO singleton
-		CursoDAO dao = new CursoDAOImpl();
-		CursoDAOImpl cursoDao= new CursoDAOImpl();
+		CursoDAO dao = CursoDAOImpl.getInstance();
+		CursoDAOImpl cursoDao= CursoDAOImpl.getInstance();
 		
 		
 		if (llamaAeliminar) {
@@ -42,31 +41,45 @@ public class CursoController extends HttpServlet {
 			 c.setId(idCurso);
 			 try {
 				cursoDao.BorrarCurso(c);
+				request.setAttribute("mensajeborrarcorrecto","El curso con id "+c.getId()+" ha sido eliminado correctamente");
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				request.setAttribute("mensajeborrar", e.getMessage());
+			}finally {
+				request.getRequestDispatcher("login").forward(request, response);
 			}
 			 
-			 request.getRequestDispatcher("login").forward(request, response);
+			 
 			 
 		}else if (llamaAalta) {
+			
 			int id_curso=Integer.parseInt(request.getParameter("idcurso"));
 			Usuario usuario= (Usuario) request.getSession().getAttribute("usuario_sesion");
 			int id_usuario= usuario.getId();
 			
 			 try {
 				cursoDao.AltaAlumnoCurso(id_usuario,id_curso);
+				request.setAttribute("mensajealtacorrecto","Te has matriculado en el curso con id "+id_curso);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				request.setAttribute("mensajealta", e.getMessage());
+				
+			}finally {
+				request.getRequestDispatcher("login").forward(request, response);
 			}
 			
-			 request.getRequestDispatcher("login").forward(request, response);
+			 
 		}
 		
-		cursos = dao.listar();
-		request.setAttribute("cursos", cursos);
-		request.getRequestDispatcher("cursos.jsp").forward(request, response);
+		try {
+			cursos = dao.listar();
+			request.setAttribute("cursos", cursos);
+		} catch (Exception e) {
+			request.setAttribute("cursos", e);
+			e.printStackTrace();
+		}finally {
+			
+			request.getRequestDispatcher("cursos.jsp").forward(request, response);
+		}
+		
 		
 		
 		
@@ -74,7 +87,7 @@ public class CursoController extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
-		CursoDAOImpl cursoDao= new CursoDAOImpl();
+		CursoDAOImpl cursoDao= CursoDAOImpl.getInstance();
 			
 			String nombre = request.getParameter("nombre");
 			String identificador= request.getParameter("identificador");
@@ -94,11 +107,12 @@ public class CursoController extends HttpServlet {
 			try {
 				cursoDao.CrearCurso(c);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				request.setAttribute("mensajecurso", e.getMessage());
+			}finally {
+				request.getRequestDispatcher("login").forward(request, response);
 			}
 		
-		request.getRequestDispatcher("login").forward(request, response);
+		
 		
 		
 	}

@@ -104,11 +104,30 @@
       <circle cx="12" cy="12" r="10" />
       <path
 						d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94" /></svg>
-			</a> <a
-				class="py-2 d-none d-md-inline-block "
-				href="cursos">Inicio</a> <a
-				class="py-2 d-none d-md-inline-block "
-				href="login.jsp">Iniciar Sesion</a> 
+			</a> 
+			
+			
+			<a class="py-2 d-none d-md-inline-block "
+				href="cursos">Inicio</a> 
+			
+			<c:choose>
+         
+				<c:when test = "${empty usuario_sesion}">
+				    <a class="py-2 d-none d-md-inline-block "href="login.jsp">Iniciar Sesion</a> 
+				</c:when>
+				
+				<c:when test = "${not empty usuario_sesion}">
+					<span class="form-inline bg-secondary rounded "> 
+				     <a class="px-1 text-white"   href="login">${usuario_sesion.nombre} ${usuario_sesion.apellidos}</a> 
+					     <a class="nav-link  bg-danger  rounded-right text-white" href="logout">
+						 	<i class="fas fa-times font-weight-bold my-1"></i>
+						 </a>
+					 
+					 </span>
+				</c:when>
+				
+			</c:choose>
+			
 				
 			
 			

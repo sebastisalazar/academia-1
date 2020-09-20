@@ -7,9 +7,9 @@ import academia.modelo.pojo.Curso;
 
 public interface CursoDAO {
 	
-	ArrayList<Curso> listar();
+	ArrayList<Curso> listar() throws Exception;
 	
-	ArrayList<Curso> listarPorProfesor(int id);
+	ArrayList<Curso> listarPorProfesor(int id) throws Exception;
 	
 	Curso CrearCurso(Curso c) throws Exception;
 	
